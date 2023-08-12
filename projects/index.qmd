@@ -1,0 +1,25 @@
+---
+sidebar: false
+description: "A collection of projects I developed"
+image: quarto.png
+toc: true
+listing:
+  date-format: short
+  feed: true
+  filter-ui: true
+  type: grid
+  sort-ui: true
+  sort: "date desc"
+  categories: true
+  fields: [image, date, title, description]
+  id: projects-listings
+  contents: [apps,community]
+aliases: ["projects/"]
+page-layout: full
+format:
+  html:
+    anchor-sections: true
+---
+
+::: {#projects-listings}
+:::

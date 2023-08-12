@@ -1,0 +1,53 @@
+---
+sidebar: false
+description: "A collection of technical blogs and tips on coding, machine learning and spatial data science."
+image: quarto.png
+toc: true
+listing:
+  date-format: short
+  feed: true
+  filter-ui: true
+  type: grid
+  sort-ui: true
+  sort: "date desc"
+  categories: true
+  fields: [image, date, title, description]
+  id: blog-listings
+  contents: [blog/posts]
+aliases: ["blog/"]
+page-layout: full
+format:
+  html:
+    anchor-sections: true
+---
+
+::: {layout="[21,79]" .profile-header}
+
+![](profile_picture.jpg){.profile-pic}
+
+Digital Soil Mapping Expert dealing with spatial modelling of soil properties, machine learning, High Performance Computing. As a PhD candidate in Mountain Environment and Agriculture at the University of Bozen/Bolzano in collaboration with Eurac research I was mainly interested in modelling the spatial distribution of soil properties, the role of trace metals in soil functioning, and water use efficiency in agriculture. I use a data science approach to answer scientific questions. I love open source software and open data.
+:::
+
+This website is intended as a **brain dump** containing tips, tricks, news, projects, in the **geospatial modelling and coding** domain
+
+
+<!-- ## 📮 Blog Posts
+
+[Subscribe here](#subscribe) -->
+
+## 📚 Blog
+
+::: {#blog-listings}
+:::
+
+<!-- ## 📬 Subscribe
+
+Subscribe via [<i class="bi bi-rss"></i> RSS](index.xml) or enter your email below:
+
+<script async data-uid="f405c5ca98" src="https://hamel.ck.page/f405c5ca98/index.js"></script> -->
+
+## 📨 Get In Touch
+
+Email me at `giulio.genova@proton.me` if you'd like to chat!
+
+---

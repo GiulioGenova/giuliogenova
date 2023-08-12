@@ -1,0 +1,212 @@
+[
+  {
+    "objectID": "blog/posts/k8s/index.html",
+    "href": "blog/posts/k8s/index.html",
+    "title": "Solving terra’s “Cannot create raster from single x or y coordinate”",
+    "section": "",
+    "text": "If you want to convert a table with coordinates into a raster in R you can use the function rast from the {terra} package.\nUnfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster from your table.\nTo avoid this error I wrote a function named rast_singlecoord_safe tha can be used just like rast\n\n\n\n\n\n\nWarning\n\n\n\nYou need to provide the x and y resolution if the table has only one unique x or y coordinate\n\n\nif ((length(unique(preds$x)) == 1) | (length(unique(preds$y)) == 1)) {\n    additional_coords &lt;- data.frame(\n        x = min(unique(preds$x), na.rm = TRUE) + resx,\n        y = min(unique(preds$y), na.rm = TRUE) + resy\n    )\n    preds &lt;- dplyr::bind_rows(preds, additional_coords)\n    pred_raster &lt;- terra::rast(preds,\n        type = \"xyz\", crs = crs, digits = 8\n    )\n    pred_raster &lt;- terra::trim(pred_raster)\n} else {\n    pred_raster &lt;- terra::rast(preds,\n        type = \"xyz\", crs = crs, digits = 8\n    )\n}\nhttps://stackoverflow.com/questions/75585028/cannot-create-a-raster-geometry-from-a-single-y-coordinate"
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#hosted-dataml-tools-are-not-always-an-option",
+    "href": "blog/posts/k8s/index.html#hosted-dataml-tools-are-not-always-an-option",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "Hosted data/ML tools are not always an option",
+    "text": "Hosted data/ML tools are not always an option\n\n\n\nA robot concierge helping a scientist\n\n\nLarge cloud providers offer their flavors of ML infrastructure as hosted solutions3. However, there is often a gap between these offerings and the needs of machine learning teams. For example, I’ve seen the following tools deployed alongside or in place of hosted solutions:\n\nMetaflow\nKubeflow\nArgo\nJupyterHub\nDask\netc.\n\nWhen open source isn’t enough, third-party vendors are happy to install their software on your cloud. However, you often need basic infrastructure skills to enable this. These skills often intersect with Kubernetes. While you may not be responsible for deploying the infrastructure yourself, it is helpful to understand the basics of how things work so that you can do basic debugging and troubleshooting. For example, knowing where to find logs or an API/HTTPS endpoint can unblock you in many cases."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#nobody-is-coming-to-save-you",
+    "href": "blog/posts/k8s/index.html#nobody-is-coming-to-save-you",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "Nobody is coming to save you",
+    "text": "Nobody is coming to save you\n\n\n\nA super hero\n\n\nA typical first experience as a machine learning professional is that you don’t have the necessary tools to get started. This is incredibly frustrating, as making progress without the proper tools can be hard. This experience usually culminates in a conversation like this:\n\nML Eng: I’m excited to join ACME company! You’ve hired me to optimize marketing spending with predictive models. The issue is that we don’t have the basic infrastructure or tools necessary for me to work efficiently.\nManager: I’m confused. Can’t you install the tools you need? Isn’t that what you are for? I was expecting that you would figure it out.\nML Eng: No, I don’t know how to set up and deploy infrastructure. We need a special infrastructure or DevOps person for that.\nManager: It will be hard to ask for more resources if we don’t know the expected return on investment. Can you do the ML project first, demonstrate some value, and then we can invest in infrastructure?\nML Eng: I need some minimum tools to experiment more quickly and develop a proof of concept. Also, I need tools that might help me collaborate better with my team…\n\nMy experience is that DevOps teams are chronically understaffed and overworked. While it usually isn’t advisable to deploy enterprise software yourself on Kubernetes for security concerns, having basic skills can lift a tremendous burden off your DevOps counterparts and make it tractable for them to help you.\nK8s are not a panacea for all infrastructure problems. You must operate within the constraints of your organization and existing software stack.4 However, with its growing popularity, it is increasingly likely that learning this technology will help you."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#ml-research-is-crowded.-compete-on-swe-skills.",
+    "href": "blog/posts/k8s/index.html#ml-research-is-crowded.-compete-on-swe-skills.",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "ML research is crowded. Compete on SWE skills.",
+    "text": "ML research is crowded. Compete on SWE skills.\n\n\n\nAn overcrowded room of scientists\n\n\nOne of the best ways to set yourself apart as a data scientist is through your skills. Traditional education often emphasizes learning the latest ML techniques. However, cutting-edge ML research is very competitive. It’s also an extremely crowded space.\nIn my experience, the bottleneck many teams face is not a lack of knowledge of cutting-edge ML techniques but software engineering skills and partners to help operationalize models. If you take some time to learn how to stand up tools and infrastructure, you will be invaluable to your team.\nMore importantly, deploying and integrating models into services and applications is critical to connecting ML to business problems. Learning K8s will help you do this."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#your-company-likely-already-runs-k8s",
+    "href": "blog/posts/k8s/index.html#your-company-likely-already-runs-k8s",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "Your company likely already runs K8s",
+    "text": "Your company likely already runs K8s\n\n\n\nA scientist shaking hands with someone who runs infrastructure\n\n\nJust as Python is the lingua franca of data science, K8s is becoming the lingua franca of cloud infrastructure. According to a 2021 Survey by CNCF, 96% of organizations are either using or evaluating Kubernetes. Furthermore, Stack Overflow’s 2022 Developer Survey shows that Docker and Kubernetes are the number one and two most loved and wanted tools, respectively. This is a strong indicator that K8s are here to stay.\nBasic proficiency with K8s will drastically increase your chances of garnering support for your desired tools in many organizations. Proficiency with K8s increases the likelihood that:\n\nYour DevOps counterparts will feel comfortable with the tools you want to deploy\nYou will have a shared language in which to talk to your application administrators\nYou will be more likely to attract people to help you with infra 5\n\nThese factors make it much more likely that you will get the tools that meet you where you are as opposed to something a software engineer without any data science experience thinks is a good idea (which I’ve seen happen a lot!)."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#but-isnt-it-overkill",
+    "href": "blog/posts/k8s/index.html#but-isnt-it-overkill",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "But isn’t it overkill?",
+    "text": "But isn’t it overkill?\n\n\n\nCutting oranges with a chainsaw\n\n\nFor simple apps that you want to stand up quickly or prototype, K8s is overkill. Instead, I’m advocating knowledge of K8s as useful when working within the environments found in many companies. For example, hosting your data product on a single VM is often insufficient if you want to deploy production software. Many companies even have infrastructure that may block you from doing this with paved paths that only include Kubernetes.\nEven if you are not deploying any production software, K8s can be invaluable in allowing you to deploy the tools you need. In many cases using K8s can make tasks easier. Enterprises have necessarily invested resources in creating guardrails to control costs and security. Those guardrails are increasingly built around K8s patterns6. Understanding these concepts can make operating within the confines of your company’s cloud stack easier."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#you-dont-need-to-be-an-expert",
+    "href": "blog/posts/k8s/index.html#you-dont-need-to-be-an-expert",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "You don’t need to be an expert",
+    "text": "You don’t need to be an expert\n\n\n\nA student sitting at a desk in a library\n\n\nK8s are complicated, but you don’t need to become an expert to unlock great value as a Data Scientist. I’m not suggesting that data scientists become K8s administrators. K8s Administration is a very involved task and worthy of its own role. Unfortunately, nearly all educational material around K8s is focused on being an administrator, which is overkill for what most data scientists need."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#a-course",
+    "href": "blog/posts/k8s/index.html#a-course",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "A course?",
+    "text": "A course?\nI haven’t yet found a good resource for people like data scientists to learn Kubernetes without wading through lots of irrelevant material geared towards administrators. So my colleagues and I are considering creating a free course with data scientists in mind. If this sounds interesting, you can sign up here."
+  },
+  {
+    "objectID": "blog/posts/k8s/index.html#footnotes",
+    "href": "blog/posts/k8s/index.html#footnotes",
+    "title": "Why Should ML Engineers Learn Kubernetes?",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nVicki is not someone who is impressed by flashy or new technologies and is someone who takes a pragmatic approach to get the job done. When she says you should learn K8s, you should pay attention!↩︎\nEach subsection of this article has a picture that has been generated by Stable diffusion with a prompt that very similar to the image caption.↩︎\nThese systems are AWS - Sagemaker, Azure - AzureML and GCP - VertexAI.↩︎\nSome organizations have built solutions that avoid K8s. For example, BigHat uses a solution based on AWS SageMaker + Lambda and other hosted solutions. So it might be a mistake to try to move over to K8s in that example – you should try to leverage your company’s existing tech stack where possible!↩︎\nMy friend Michał Jastrzębski, who specializes in ML infrastructure, has shared the following colorful anecdote with me: “when I hear Data Scientists shouldn’t learn K8s”, I hear “DevOps needs to learn Airflow”.↩︎\nSpecifically, K8s concepts that are relevant are namespaces, labels and RBAC.↩︎"
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html",
+    "href": "blog/posts/nbdev/index.html",
+    "title": "On commercializing nbdev",
+    "section": "",
+    "text": "nbdev is a software development tool based on Jupyter that feels like its from the future.\nA few friends have asked me why I decided not to commercialize nbdev, especially after putting lots of work into the project, including leaving my full-time job to work on it. So I thought I would write a short post to explain my reasoning."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#background",
+    "href": "blog/posts/nbdev/index.html#background",
+    "title": "On commercializing nbdev",
+    "section": "Background",
+    "text": "Background\nnbdev is an innovative software development framework for Python that embraces literate and exploratory programming. I worked on nbdev from 2020-2023 with Jeremy Howard and, later, Wasim Lorgat. I had the privilege and excitement of exploring the boundaries of developer tools and exploratory programming while working with very talented software engineers. In addition to creating a tool many people enjoyed, I enjoyed using nbdev for personal and professional projects."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#opportunities",
+    "href": "blog/posts/nbdev/index.html#opportunities",
+    "title": "On commercializing nbdev",
+    "section": "Opportunities",
+    "text": "Opportunities\nWhile conducting product research, I interviewed many developers from different backgrounds to understand their pain points and needs. All developers I talked to struggled with one key challenge: it was difficult, if not impossible, to convince other engineers to use nbdev.\nThe following are the biggest reasons that prevented adoption:\n\nFriction in onboarding engineers. In many companies, there are often existing Python projects, and it can be detrimental to maintain different ways of doing things when a company has already settled upon one way that it has built processes and tools around.\nCollisions with the rest of the software development stack: it was (and still is) a pain to version control notebooks in a way that’s conducive to collaboration. For practical purposes, you cannot perform code reviews of notebooks on GitHub without purchasing a tool called ReviewNB. So instead of convincing people to use nbdev, you have to convince them to use nbdev and ReviewNB. This makes the barrier to initial adoption considerably high - as procuring software in many organizations is a non-trivial process involving security review, compliance, legal and other stakeholders.\n\nI viewed solving the above problems as potential opportunities for commercializing nbdev."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#shifting-focus",
+    "href": "blog/posts/nbdev/index.html#shifting-focus",
+    "title": "On commercializing nbdev",
+    "section": "Shifting Focus",
+    "text": "Shifting Focus\nJeremy, Wasim, and I eventually settled on the idea of “WordPress for developers,” a hosted site allowing people to create and share nbdev projects. We thought this would be an excellent way to get people to try nbdev without installing anything. The idea was to narrow the audience to people interested in hosting projects on a platform that promoted exploration and sharing, similar to Glitch that was as easy to use and pragmatic as Wordpress.\nAround the same time we began discussing hosted tools, the machine learning world experienced a tectonic shift due to the explosion of Generative AI, namely Stable Diffusion. fast.ai, the organization that created nbdev, was also changing its focus. fast.ai’s prime directive was to make deep learning accessible to as many people as possible, and generative AI was too important to ignore. Accordingly, Jeremy placed his full attention on a Stable Diffusion course.\nThis pivot caused some turbulence as we navigated the different priorities of nbdev, generative AI research, and making money. We eventually settled on offering consulting services for everything related to fast.ai in the form of fast.ai partners, which would allow us to bootstrap ourselves financially and embrace the larger mission of fast.ai (including generative AI and research). Eventually, I found the splintered focus across so many areas to be unproductive1 and decided to step away from everything except consulting to regain my footing.\nSoon after that, ChatGPT emerged onto the scene and caused further shifts in machine learning that were orders of magnitude larger than their text-to-image predecessors. Pretty soon, all of my clients were interested in language models, and I found myself working exclusively on operationalizing them (a skill that I have cultivated by working in machine learning for 20+ years). Additionally, LLMs profoundly changed the nature of software development, especially the kind of software development that nbdev was designed to support2. These factors and those discussed earlier suggested it was a good time to step away from nbdev and focus on other things."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#what-i-learned",
+    "href": "blog/posts/nbdev/index.html#what-i-learned",
+    "title": "On commercializing nbdev",
+    "section": "What I learned",
+    "text": "What I learned\nI learned some important lessons during this process:\n\nJust because you love a project and find it useful, that doesn’t necessarily imply that it’s ripe for commercialization. I always struggled to gain conviction that there was a good business model for nbdev.3 Instead, I pursued this path because I was drawn to the idea of starting a business with people I really liked. Ultimately, I learned that at least one person needs strong conviction in addition to being excited about the people you are working with - not just one or the other.4 I also learned that it’s important to be honest with yourself about your (and your team’s) level of conviction and not try to force something that isn’t there.\nListen to your instincts. I ignored my instincts on multiple occasions throughout this journey. As I’ve grown older, I’ve learned to make this mistake much less often, but I could have done better here.\nDon’t be afraid to pivot. I think we avoided unnecessary churn by steering clear of a situation that wasn’t promising. I’m much more excited about the work I’m doing now.5\nOwn your own brand. My professional brand became increasingly tied to fast.ai and my friend Jeremy Howard. I’m grateful for the growth I’ve experienced under this mentorship – but I believe it is important to build your own distinct brand and identity. I discovered it can be challenging to build your own brand when you are working on someone else’s project6, and is something I struggled with. I’m looking forward to working on this more."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#future-directions",
+    "href": "blog/posts/nbdev/index.html#future-directions",
+    "title": "On commercializing nbdev",
+    "section": "Future Directions",
+    "text": "Future Directions\nI suspect that I’m not completely finished with nbdev. I may revisit the project or related ideas when the time is right. I’m excited by the work Posit is doing in the areas of literate and exploratory programming, which include many of the ideas explored in nbdev. Wasim has even joined the team at Posit, so I’m excited to see what they come up with.7\nRegarding what I’m working on next – I’ll have to save my thoughts on that for another post 😊."
+  },
+  {
+    "objectID": "blog/posts/nbdev/index.html#footnotes",
+    "href": "blog/posts/nbdev/index.html#footnotes",
+    "title": "On commercializing nbdev",
+    "section": "Footnotes",
+    "text": "Footnotes\n\n\nI burned out several times during this process, but I didn’t realize why at the time. Not surprisingly, trying to focus on too many things at once was the root cause.↩︎\nSee this demo for ideas on how coding with LLMs might look like, especially with notebooks.↩︎\nThe problem with the hosted solution is that this is not something I would want to use. I can’t picture myself trying to host code on something other than GitHub/GitLab.↩︎\nWithout shared conviction, there is no glue holding everyone together and people can drift apart.↩︎\nI’ll share more about this in a future post.↩︎\nI don’t believe this is always the case, but it can be true depending on the dynamics of the group.↩︎\nWe previously partnered with Posit and JJ Allaire and built nbdev on top of Quarto. I’m currently advising Posit on their product and strategy. They have additional projects on their roadmap that I cannot disclose now.↩︎"
+  },
+  {
+    "objectID": "blog/secret.html",
+    "href": "blog/secret.html",
+    "title": "Giulio’s Blog",
+    "section": "",
+    "text": "This page is supposed to be secret!\n\n\n\nA listing of all my blog posts can be found here\n\n\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\n\n\n\n\n\nR\n\n\nterra\n\n\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n\n\n\nJan 16, 2023\n\n\nGiulio Genova\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "Digital Soil Mapping Expert dealing with spatial modelling of soil properties, machine learning, High Performance Computing. As a PhD candidate in Mountain Environment and Agriculture at the University of Bozen/Bolzano in collaboration with Eurac research I was mainly interested in modelling the spatial distribution of soil properties, the role of trace metals in soil functioning, and water use efficiency in agriculture. I use a data science approach to answer scientific questions. I love open source software and open data.\nThis website is intended as a brain dump containing tips, tricks, news, projects, in the geospatial modelling and coding domain"
+  },
+  {
+    "objectID": "index.html#get-in-touch",
+    "href": "index.html#get-in-touch",
+    "title": "Giulio's Blog",
+    "section": "📨 Get In Touch",
+    "text": "📨 Get In Touch\nEmail me at giulio.genova@proton.me if you’d like to chat!"
+  },
+  {
+    "objectID": "index.html#blog",
+    "href": "index.html#blog",
+    "title": "Giulio's Blog",
+    "section": "📚 Blog",
+    "text": "📚 Blog\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n1/16/23\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Have a look at my Google Scholar and ORCID, they are probably more reliable and up to date than the following list"
+  },
+  {
+    "objectID": "publications.html#papers",
+    "href": "publications.html#papers",
+    "title": "Publications",
+    "section": "Papers",
+    "text": "Papers\n\nCopper and zinc as a window to past agricultural land-use\nPhytoavailable phosphorus (P2O5) and potassium (K2O) in topsoil for apple orchards and vineyards, South Tyrol, Italy\nTopography of the Dolomites modulates range dynamics of narrow endemic plants under climate change"
+  },
+  {
+    "objectID": "publications.html#conferences",
+    "href": "publications.html#conferences",
+    "title": "Publications",
+    "section": "Conferences",
+    "text": "Conferences"
+  },
+  {
+    "objectID": "guest-blog.html",
+    "href": "guest-blog.html",
+    "title": "Guest Blogs",
+    "section": "",
+    "text": "nbdev + Quarto: A new secret weapon for productivity, the fastai blog, July 2022.\nNotebooks in production with Metaflow Introduces a new Metaflow feature that allows users to use notebooks in production ML workflows.\nPython Concurrency: The Tricky Bits: An exploration of threads, processes, and coroutines in Python, with interesting examples that illuminate the differences between each.\nghapi, a new third-party Python client for the GitHub API by Jeremy Howard & Hamel Husain, GitHub Repo.\nNbdev: A literate programming environment that democratizes software engineering best practices by Hamel Husain, Jeremy Howard, The GitHub Blog.\nfastcore: An Underrated Python Library by Hamel Husain, Jeremy Howard, GitHub Repo.\nData Science Meets Devops: MLOps with Jupyter, Git, & Kubernetes: An end-to-end example of deploying a machine learning product using Jupyter, Papermill, Tekton, GitOps and Kubeflow. by Jeremy Lewi, Hamel_Husain, The Kubeflow Blog.\nIntroducing fastpages, An easy to use blogging platform with extra features for Jupyter Notebooks. by Jeremy Howard & Hamel Husain, GitHub Repo\nGitHub Actions: Providing Data Scientists With New Superpowers by Jeremy Howard & Hamel Husain.\nCodeSearchNet Challenge: Evaluating the State of Semantic Code Search: by Miltiadis Allamanis, Marc Brockschmidt, Hamel Husain, Ho-Hsiang Wu, Tiferet Gazit GitHub Repo\nHow To Create Natural Language Semantic Search for Arbitrary Objects With Deep Learning. (Related: GitHub engineering blog article, Live demo)\nHow To Create Magical Data Products Using Sequence-to-Sequence Models\nHow to Automate Tasks on GitHub With Machine Learning for Fun and Profit\nHow Docker Can Make You A More Effective Data Scientist\nAutomated Machine Learning, A Paradigm Shift That Accelerates Data Scientst Productivity At Airbnb"
+  },
+  {
+    "objectID": "projects/projects.html",
+    "href": "projects/projects.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/index.html",
+    "href": "projects/index.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBolzanoR\n\n\nThe R community in the center of the Alps\n\n\n\n8/11/23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeteobrowser\n\n\nA Shiny App to download the meteorological time series from the Open Data - Province of Bozen\n\n\n\n8/6/23\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/apps/meteobrowser/index.html",
+    "href": "projects/apps/meteobrowser/index.html",
+    "title": "Meteobrowser",
+    "section": "",
+    "text": "MeteoBrowser UI\n\n\nAfter my master degree I started working as a researcher for eurac research. I was working on estimating water needs in apple orchards and I needed meteo data. The province of Bozen provided an API to access the data but no User Interface. So I decided to create one myself… that is how the MeteoBrowser came to life.\nMeteo Browser South Tyrol is a user-friendly web-based application that helps to visualize and download the hydro-meteorological time series freely available in South Tyrol, Italy. It is designed for a wide range of users, from common citizens to students as well as researchers, private companies and the public administration. Meteo Browser South Tyrol is a Shiny App inside an R package and can be used on a local machine or accessed on-line. Drop down menus allow the user to select hydro-meteorological station and measurements. A simple map shows where the monitoring stations are, the latest measurements available, and lets the user subset the selected stations geographically by drawing a polygon.\nThe application is hosted by eurac reasearch at the following addresshttp://meteobrowser.eurac.edu/\nA couple of years later Mattia Rossi and I, won the eurac open research award. Here’s an interview on the topic (in italian but translators work well on it) Mattia is the collegue that built the backend of the application\nThis paper contains short description of the software capabilities and usage:\nMeteo Browser South Tyrol: A Shiny App to download the meteorological time series from the Open Data Catalogue of the Province of Bolzano/Bozen - Italy"
+  },
+  {
+    "objectID": "projects/community/bolzanor/index.html",
+    "href": "projects/community/bolzanor/index.html",
+    "title": "BolzanoR",
+    "section": "",
+    "text": "BolzanoR Website Home Page\n\n\nhttps://www.bolzanor.eu/\nThis community is all about bringing together all kind of R users spread across the Autonomous Province of South Tyrol located in the Dolomitic regions the heart of the European Alps.We started the group in May 2019 as a cooperation between the Institutes for Earth Observation and Alpine Environment at EURAC Research. Recently we are trying to include also other R-users from other scientific institusions, the private sector and also the hobby R programmers\nThe group is no longer active!"
+  },
+  {
+    "objectID": "publications.html#awards",
+    "href": "publications.html#awards",
+    "title": "Publications",
+    "section": "Awards",
+    "text": "Awards\nWell… I only got one but you never know.. better start a section!\n\nEarly Career - Open Research Award - Eurac researc\n\nInterview\nNomination"
+  },
+  {
+    "objectID": "blog/posts/R/index.html",
+    "href": "blog/posts/R/index.html",
+    "title": "Solving terra’s “Cannot create raster from single x or y coordinate”",
+    "section": "",
+    "text": "In R if you want to convert a table (dataframe) having coordinates into a raster you can use the function rast from the {terra} package.\nUnfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster from.\nThe exact error you will get is:\nError: [rast] cannot create a raster geometry from a single x coordinate or Error: [rast] cannot create a raster geometry from a single y coordinate\nThis was asked on Stack Overflow in February 2023\nTo avoid this error I wrote a function named rast_singlecoord_safe that can be used just like rast\n\n\n\n\n\n\nWarning\n\n\n\nYou need to provide the x and/or y resolution\n\n\nHere’s the function with a working example:\nlibrary(terra)\nmydf &lt;- data.frame(x = 10, y = 10, value = 42)\n\nrast_singlecoord_safe &lt;- function(\n    x, resx = NULL, resy = NULL, type = \"xyz\", crs = \"\",\n    digits = 6, extent = NULL) {\n    if ((length(unique(x$x)) == 1) | (length(unique(x$y)) == 1)) {\n        if (is.null(resx) & is.null(resy)) {\n            writeLines(\"provide at least an x or y resolution\")\n            stop()\n        }\n        if (is.null(resx)) {\n            resx &lt;- resy\n        }\n        if (is.null(resy)) {\n            resy &lt;- resx\n        }\n        additional_coords &lt;- data.frame(\n            x = min(unique(x$x), na.rm = TRUE) + resx,\n            y = min(unique(x$y), na.rm = TRUE) + resy\n        )\n        additional_coords[setdiff(names(x), names(additional_coords))] &lt;- NA\n        x &lt;- rbind(x, additional_coords)\n        rst &lt;- terra::rast(x,\n            type = type, crs = crs, digits = digits, extent=extent\n        )\n        rst &lt;- terra::trim(rst)\n    } else {\n        rst &lt;- terra::rast(x,\n            type = type, crs = crs, digits = digits, extent=extent\n        )\n    }\n    return(rst)\n}\n\nrast_singlecoord_safe(mydf,resx=50,resy=50)"
+  }
+]

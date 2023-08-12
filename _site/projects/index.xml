@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Giulio&#39;s Blog</title>
+<link>https://giuliogenova.com/projects/index.html</link>
+<atom:link href="https://giuliogenova.com/projects/index.xml" rel="self" type="application/rss+xml"/>
+<description>A collection of projects I developed</description>
+<image>
+<url>https://giuliogenova.com/quarto.png</url>
+<title>Giulio&#39;s Blog</title>
+<link>https://giuliogenova.com/projects/index.html</link>
+<height>86</height>
+<width>144</width>
+</image>
+<generator>quarto-1.3.340</generator>
+<lastBuildDate>Thu, 10 Aug 2023 23:00:00 GMT</lastBuildDate>
+<item>
+  <title>BolzanoR</title>
+  <dc:creator>Giulio Genova</dc:creator>
+  <link>https://giuliogenova.com/projects/community/bolzanor/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://giuliogenova.com/projects/community/bolzanor/bolzanor_website.png" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">BolzanoR Website Home Page</figcaption><p></p>
+</figure>
+</div>
+<p><a href="https://www.bolzanor.eu/">https://www.bolzanor.eu/</a></p>
+<p>This community is all about bringing together all kind of R users spread across the Autonomous Province of South Tyrol located in the Dolomitic regions the heart of the European Alps.We started the group in May 2019 as a cooperation between the Institutes for Earth Observation and Alpine Environment at EURAC Research. Recently we are trying to include also other R-users from other scientific institusions, the private sector and also the hobby R programmers</p>
+<p>The group is no longer active!</p>
+<!-- ```{=html}
+<iframe src="http://meteobrowser.eurac.edu" height="800" width="800" title="MeteoBrowser"></iframe>
+``` -->
+
+
+
+ ]]></description>
+  <category>R</category>
+  <category>Programming</category>
+  <category>Data</category>
+  <guid>https://giuliogenova.com/projects/community/bolzanor/index.html</guid>
+  <pubDate>Thu, 10 Aug 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://www.bolzanor.eu/img/Rbz2.png" medium="image" type="image/png"/>
+</item>
+<item>
+  <title>Meteobrowser</title>
+  <dc:creator>Giulio Genova</dc:creator>
+  <link>https://giuliogenova.com/projects/apps/meteobrowser/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://giuliogenova.com/projects/apps/meteobrowser/https:/github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">MeteoBrowser UI</figcaption><p></p>
+</figure>
+</div>
+<p>After my master degree I started working as a researcher for <a href="https://www.eurac.edu/en">eurac research</a>. I was working on estimating water needs in apple orchards and I needed meteo data. The province of Bozen provided an API to access the data but no User Interface. So I decided to create one myself… that is how the MeteoBrowser came to life.</p>
+<p>Meteo Browser South Tyrol is a user-friendly web-based application that helps to visualize and download the hydro-meteorological time series freely available in South Tyrol, Italy. It is designed for a wide range of users, from common citizens to students as well as researchers, private companies and the public administration. Meteo Browser South Tyrol is a Shiny App inside an R package and can be used on a local machine or accessed on-line. Drop down menus allow the user to select hydro-meteorological station and measurements. A simple map shows where the monitoring stations are, the latest measurements available, and lets the user subset the selected stations geographically by drawing a polygon.</p>
+<p>The application is hosted by eurac reasearch at the following address<a href="http://meteobrowser.eurac.edu/">http://meteobrowser.eurac.edu/</a></p>
+<p>A couple of years later Mattia Rossi and I, won the <a href="https://www.eurac.edu/en/open-science/open-research/open-research-award-2023/open-research-award-2021">eurac open research award</a>. Here’s an <a href="https://www.eurac.edu/it/magazine/quelli-che-l-excel-non-gli-basta-piu">interview on the topic</a> (in italian but translators work well on it) Mattia is the collegue that built the backend of the application</p>
+<p>This paper contains short description of the software capabilities and usage:</p>
+<p><a href="https://riojournal.com/article/35894/">Meteo Browser South Tyrol: A Shiny App to download the meteorological time series from the Open Data Catalogue of the Province of Bolzano/Bozen - Italy</a></p>
+<!-- ```{=html}
+<iframe src="http://meteobrowser.eurac.edu" height="800" width="800" title="MeteoBrowser"></iframe>
+``` -->
+
+
+
+ ]]></description>
+  <category>App</category>
+  <category>Meteo</category>
+  <category>Data</category>
+  <guid>https://giuliogenova.com/projects/apps/meteobrowser/index.html</guid>
+  <pubDate>Sat, 05 Aug 2023 23:00:00 GMT</pubDate>
+  <media:content url="https://github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true" medium="image"/>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,79 @@
+---
+title: Solving terra's "Cannot create raster from single x or y coordinate"
+description: You cannot create single pixel SpatRast objects from dataframe. Here's my way to solve it
+categories: [R,terra]
+author: Giulio Genova
+date: 2023-01-16
+image: https://rspatial.github.io/terra/reference/figures/logo.png
+order: 1
+---
+
+![](pattern-8100674_1280_crp.jpg)
+
+In R if you want to convert a table (dataframe) having coordinates into a raster you can use
+the function `rast` from the {terra} package.
+
+Unfortunately if your dataframe has only one unique x or y coordinate you
+will get an error. This is because {terra} cannot infer the resolution of
+the raster from.
+
+The exact error you will get is:
+
+`Error: [rast] cannot create a raster geometry from a single x coordinate`
+or
+`Error: [rast] cannot create a raster geometry from a single y coordinate`
+
+This was asked on [Stack Overflow](
+https://stackoverflow.com/questions/75585028/cannot-create-a-raster-geometry-from-a-single-y-coordinate) in February 2023
+
+To avoid this error I wrote a function named `rast_singlecoord_safe` that can be used
+just like `rast`
+
+
+:::callout-warning
+You need to provide the x and/or y resolution
+:::
+
+Here's the function with a working example: 
+
+```r
+library(terra)
+mydf <- data.frame(x = 10, y = 10, value = 42)
+
+rast_singlecoord_safe <- function(
+    x, resx = NULL, resy = NULL, type = "xyz", crs = "",
+    digits = 6, extent = NULL) {
+    if ((length(unique(x$x)) == 1) | (length(unique(x$y)) == 1)) {
+        if (is.null(resx) & is.null(resy)) {
+            writeLines("provide at least an x or y resolution")
+            stop()
+        }
+        if (is.null(resx)) {
+            resx <- resy
+        }
+        if (is.null(resy)) {
+            resy <- resx
+        }
+        additional_coords <- data.frame(
+            x = min(unique(x$x), na.rm = TRUE) + resx,
+            y = min(unique(x$y), na.rm = TRUE) + resy
+        )
+        additional_coords[setdiff(names(x), names(additional_coords))] <- NA
+        x <- rbind(x, additional_coords)
+        rst <- terra::rast(x,
+            type = type, crs = crs, digits = digits, extent=extent
+        )
+        rst <- terra::trim(rst)
+    } else {
+        rst <- terra::rast(x,
+            type = type, crs = crs, digits = digits, extent=extent
+        )
+    }
+    return(rst)
+}
+
+rast_singlecoord_safe(mydf,resx=50,resy=50)
+
+
+```
+

@@ -1,0 +1,27 @@
+---
+title: "Meteobrowser"
+description: A Shiny App to download the meteorological time series from the Open Data - Province of Bozen
+categories: [App,Meteo,Data]
+author: Giulio Genova
+date: 2023-08-06
+image: https://github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true
+order: 1
+---
+![MeteoBrowser UI](https://github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true)
+
+After my master degree I started working as a researcher for [eurac research](https://www.eurac.edu/en). I was working on estimating water needs in apple orchards and I needed meteo data. The province of Bozen provided an API to access the data but no User Interface. So I decided to create one myself... that is how the MeteoBrowser came to life.
+
+Meteo Browser South Tyrol is a user-friendly web-based application that helps to visualize and download the hydro-meteorological time series freely available in South Tyrol, Italy. It is designed for a wide range of users, from common citizens to students as well as researchers, private companies and the public administration. Meteo Browser South Tyrol is a Shiny App inside an R package and can be used on a local machine or accessed on-line. Drop down menus allow the user to select hydro-meteorological station and measurements. A simple map shows where the monitoring stations are, the latest measurements available, and lets the user subset the selected stations geographically by drawing a polygon.
+
+The application is hosted by eurac reasearch at the following address[http://meteobrowser.eurac.edu/](http://meteobrowser.eurac.edu/)
+
+A couple of years later Mattia Rossi and I, won the [eurac open research award](https://www.eurac.edu/en/open-science/open-research/open-research-award-2023/open-research-award-2021). Here's an [interview on the topic](https://www.eurac.edu/it/magazine/quelli-che-l-excel-non-gli-basta-piu) (in italian but translators work well on it)
+Mattia is the collegue that built the backend of the application 
+
+This paper contains short description of the software capabilities and usage:
+
+[Meteo Browser South Tyrol: A Shiny App to download the meteorological time series from the Open Data Catalogue of the Province of Bolzano/Bozen - Italy](https://riojournal.com/article/35894/)
+
+<!-- ```{=html}
+<iframe src="http://meteobrowser.eurac.edu" height="800" width="800" title="MeteoBrowser"></iframe>
+``` -->

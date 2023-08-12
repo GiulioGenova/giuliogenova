@@ -1,0 +1,63 @@
+project:
+  type: website
+
+exeucte:
+  eval: false
+
+website:
+  title: "Giulio's Blog"
+  image: quarto.png
+  page-footer:
+    center:
+      - icon: linkedin
+        href: https://www.linkedin.com/in/giulio-genova-a54b30a4
+      - icon: twitter
+        href: https://twitter.com/giuliogenova
+      - icon: github
+        href: https://github.com/giuliogenova
+      - icon: rss
+        href: index.xml
+  favicon: Letter_G_blue_35003.ico
+  open-graph: true
+  twitter-card:
+     creator: "@giuliogenova"
+  site-url: "https://giuliogenova.com/"
+  description: "A collection of blogs and notes on spatial data science."
+  repo-url: https://github.com/GiulioGenova/giuliogenova.com
+  repo-actions: [edit]
+  repo-branch: main
+  navbar:
+    title: false
+    background: secondary
+    pinned: false
+    collapse: false
+    left:
+    # 🏠 📮 👨🏽‍💻 🍎 🎤 📚 📧 📨
+    - text: "Blog"
+      href: index.qmd
+    - text: Projects
+      file: projects/index.qmd
+    - text: Publications 
+      file: publications.qmd
+    right:
+      - icon: rss
+        href: index.xml
+    
+
+  sidebar:
+    - title: Notes
+      pinned: true
+      collapse-level: 1
+      style: docked
+      contents: notes/**
+
+format:
+  html:
+    reference-location: document
+    theme: 
+      light: simplex #flatly #bootswhatch #quartz # superhero # [solar, custom.scss]
+      dark: darkly
+    css:
+      - mystyles.css
+    toc: true
+

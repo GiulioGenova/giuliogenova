@@ -1,0 +1,27 @@
+---
+title: Publications
+description: A list of my papers and conferences (talks or posters)
+toc: true
+sidebar: false
+---
+
+Have a look at my [Google Scholar](https://scholar.google.com/citations?user=pdwaOmMAAAAJ&hl=en) 
+and [ORCID](https://orcid.org/0000-0001-9412-8651), they are probably more reliable 
+and up to date than the following list
+
+## Awards
+
+Well... I only got one but you never know.. better start a section!
+
+- [Early Career - Open Research Award - Eurac researc](https://www.eurac.edu/en/open-science/open-research/open-research-award-2023/open-research-award-2021)
+    - [Interview](https://www.eurac.edu/it/magazine/quelli-che-l-excel-non-gli-basta-piu)
+    - [Nomination](https://webassets.eurac.edu/31538/1664207297-ora-genova_rossi-nomination.pdf)
+
+## Papers
+
+- [Copper and zinc as a window to past agricultural land-use](https://www.sciencedirect.com/science/article/pii/S030438942101596X)
+- [Phytoavailable phosphorus (P2O5) and potassium (K2O) in topsoil for apple orchards and vineyards, South Tyrol, Italy](https://www.tandfonline.com/doi/full/10.1080/17445647.2019.1633962)
+- [Topography of the Dolomites modulates range dynamics of narrow endemic plants under climate change](https://www.nature.com/articles/s41598-022-05440-3)
+
+
+## Conferences
