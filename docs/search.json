@@ -1,0 +1,86 @@
+[
+  {
+    "objectID": "projects/community/bolzanor/index.html",
+    "href": "projects/community/bolzanor/index.html",
+    "title": "BolzanoR",
+    "section": "",
+    "text": "BolzanoR Website Home Page\n\n\nhttps://www.bolzanor.eu/\nThis community is all about bringing together all kind of R users spread across the Autonomous Province of South Tyrol located in the Dolomitic regions the heart of the European Alps.We started the group in May 2019 as a cooperation between the Institutes for Earth Observation and Alpine Environment at EURAC Research. Recently we are trying to include also other R-users from other scientific institusions, the private sector and also the hobby R programmers\nThe group is no longer active!"
+  },
+  {
+    "objectID": "projects/index.html",
+    "href": "projects/index.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBolzanoR\n\n\nThe R community in the center of the Alps\n\n\n\n8/11/23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeteobrowser\n\n\nA Shiny App to download the meteorological time series from the Open Data - Province of Bozen\n\n\n\n8/6/23\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "projects/apps/meteobrowser/index.html",
+    "href": "projects/apps/meteobrowser/index.html",
+    "title": "Meteobrowser",
+    "section": "",
+    "text": "MeteoBrowser UI\n\n\nAfter my master degree I started working as a researcher for eurac research. I was working on estimating water needs in apple orchards and I needed meteo data. The province of Bozen provided an API to access the data but no User Interface. So I decided to create one myself… that is how the MeteoBrowser came to life.\nMeteo Browser South Tyrol is a user-friendly web-based application that helps to visualize and download the hydro-meteorological time series freely available in South Tyrol, Italy. It is designed for a wide range of users, from common citizens to students as well as researchers, private companies and the public administration. Meteo Browser South Tyrol is a Shiny App inside an R package and can be used on a local machine or accessed on-line. Drop down menus allow the user to select hydro-meteorological station and measurements. A simple map shows where the monitoring stations are, the latest measurements available, and lets the user subset the selected stations geographically by drawing a polygon.\nThe application is hosted by eurac reasearch at the following addresshttp://meteobrowser.eurac.edu/\nA couple of years later Mattia Rossi and I, won the eurac open research award. Here’s an interview on the topic (in italian but translators work well on it) Mattia is the collegue that built the backend of the application\nThis paper contains short description of the software capabilities and usage:\nMeteo Browser South Tyrol: A Shiny App to download the meteorological time series from the Open Data Catalogue of the Province of Bolzano/Bozen - Italy"
+  },
+  {
+    "objectID": "blog/posts/R/index.html",
+    "href": "blog/posts/R/index.html",
+    "title": "Solving terra’s “Cannot create raster from single x or y coordinate”",
+    "section": "",
+    "text": "In R if you want to convert a table (dataframe) having coordinates into a raster you can use the function rast from the {terra} package.\nUnfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster from.\nThe exact error you will get is:\nError: [rast] cannot create a raster geometry from a single x coordinate or Error: [rast] cannot create a raster geometry from a single y coordinate\nThis was asked on Stack Overflow in February 2023\nTo avoid this error I wrote a function named rast_singlecoord_safe that can be used just like rast\n\n\n\n\n\n\nWarning\n\n\n\nYou need to provide the x and/or y resolution\n\n\nHere’s the function with a working example:\nlibrary(terra)\nmydf &lt;- data.frame(x = 10, y = 10, value = 42)\n\nrast_singlecoord_safe &lt;- function(\n    x, resx = NULL, resy = NULL, type = \"xyz\", crs = \"\",\n    digits = 6, extent = NULL) {\n    if ((length(unique(x$x)) == 1) | (length(unique(x$y)) == 1)) {\n        if (is.null(resx) & is.null(resy)) {\n            writeLines(\"provide at least an x or y resolution\")\n            stop()\n        }\n        if (is.null(resx)) {\n            resx &lt;- resy\n        }\n        if (is.null(resy)) {\n            resy &lt;- resx\n        }\n        additional_coords &lt;- data.frame(\n            x = min(unique(x$x), na.rm = TRUE) + resx,\n            y = min(unique(x$y), na.rm = TRUE) + resy\n        )\n        additional_coords[setdiff(names(x), names(additional_coords))] &lt;- NA\n        x &lt;- rbind(x, additional_coords)\n        rst &lt;- terra::rast(x,\n            type = type, crs = crs, digits = digits, extent=extent\n        )\n        rst &lt;- terra::trim(rst)\n    } else {\n        rst &lt;- terra::rast(x,\n            type = type, crs = crs, digits = digits, extent=extent\n        )\n    }\n    return(rst)\n}\n\nrast_singlecoord_safe(mydf,resx=50,resy=50)"
+  },
+  {
+    "objectID": "blog/secret.html",
+    "href": "blog/secret.html",
+    "title": "Giulio’s Blog",
+    "section": "",
+    "text": "This page is supposed to be secret!\n\n\n\nA listing of all my blog posts can be found here\n\n\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\n\n\n\n\n\nR\n\n\nterra\n\n\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n\n\n\nJan 16, 2023\n\n\nGiulio Genova\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "Digital Soil Mapping Expert dealing with spatial modelling of soil properties, machine learning, High Performance Computing. As a PhD candidate in Mountain Environment and Agriculture at the University of Bozen/Bolzano in collaboration with Eurac research I was mainly interested in modelling the spatial distribution of soil properties, the role of trace metals in soil functioning, and water use efficiency in agriculture. I use a data science approach to answer scientific questions. I love open source software and open data.\nThis website is intended as a brain dump containing tips, tricks, news, projects, in the geospatial modelling and coding domain"
+  },
+  {
+    "objectID": "index.html#blog",
+    "href": "index.html#blog",
+    "title": "Giulio's Blog",
+    "section": "📚 Blog",
+    "text": "📚 Blog\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n1/16/23\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "index.html#get-in-touch",
+    "href": "index.html#get-in-touch",
+    "title": "Giulio's Blog",
+    "section": "📨 Get In Touch",
+    "text": "📨 Get In Touch\nEmail me at giulio.genova@proton.me if you’d like to chat!"
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "Have a look at my Google Scholar and ORCID, they are probably more reliable and up to date than the following list"
+  },
+  {
+    "objectID": "publications.html#awards",
+    "href": "publications.html#awards",
+    "title": "Publications",
+    "section": "Awards",
+    "text": "Awards\nWell… I only got one but you never know.. better start a section!\n\nEarly Career - Open Research Award - Eurac researc\n\nInterview\nNomination"
+  },
+  {
+    "objectID": "publications.html#papers",
+    "href": "publications.html#papers",
+    "title": "Publications",
+    "section": "Papers",
+    "text": "Papers\n\nCopper and zinc as a window to past agricultural land-use\nPhytoavailable phosphorus (P2O5) and potassium (K2O) in topsoil for apple orchards and vineyards, South Tyrol, Italy\nTopography of the Dolomites modulates range dynamics of narrow endemic plants under climate change"
+  },
+  {
+    "objectID": "publications.html#conferences",
+    "href": "publications.html#conferences",
+    "title": "Publications",
+    "section": "Conferences",
+    "text": "Conferences"
+  }
+]

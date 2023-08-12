@@ -6,9 +6,11 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A collection of projects I developed">
+<meta name="author" content="Giulio Genova">
+<meta name="dcterms.date" content="2023-01-16">
+<meta name="description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
 
-<title>Giulio's Blog – index</title>
+<title>Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,29 +23,61 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<link href="../stemma_genova_s.ico" rel="icon">
-<script src="../site_libs/quarto-listing/list.min.js"></script>
-<script src="../site_libs/quarto-listing/quarto-listing.js"></script>
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../Letter_G_blue_35003.ico" rel="icon">
+<script src="../../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -63,41 +97,19 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
-<script>
 
-  window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-projects-listings .list');
-    if (!listingTargetEl) {
-      // No listing discovered, do not attach.
-      return; 
-    }
 
-    const options = {
-      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
-      
-      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
-    };
-
-    window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-projects-listings'] = new List('listing-projects-listings', options);
-
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  });
-
-  window.addEventListener('hashchange',() => {
-    if (window['quarto-listing-loaded']) {
-      window['quarto-listing-loaded']();
-    }
-  })
-  </script>
-
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
-
-<link rel="stylesheet" href="../mystyles.css">
-<link rel="alternate" type="application/rss+xml" title="Giulio's Blog" href="index.xml"></head>
+<link rel="stylesheet" href="../../../mystyles.css">
+<meta property="og:title" content="Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”">
+<meta property="og:description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
+<meta property="og:image" content="https://rspatial.github.io/terra/reference/figures/logo.png">
+<meta property="og:site-name" content="Giulio's Blog">
+<meta name="twitter:title" content="Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”">
+<meta name="twitter:description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
+<meta name="twitter:image" content="https://rspatial.github.io/terra/reference/figures/logo.png">
+<meta name="twitter:creator" content="@giuliogenova">
+<meta name="twitter:card" content="summary_large_image">
+</head>
 
 <body class="nav-fixed">
 
@@ -107,21 +119,21 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
           <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="../index.html" rel="" target="">
+    <a class="nav-link" href="../../../index.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="../projects/index.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="../../../projects/index.html" rel="" target="">
  <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="../publications.html" rel="" target="">
+    <a class="nav-link" href="../../../publications.html" rel="" target="">
  <span class="menu-text">Publications</span></a>
   </li>  
 </ul>
           <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
+    <a class="nav-link" href="../../../index.xml" rel="" target=""><i class="bi bi-rss" role="img">
 </i> 
  <span class="menu-text"></span></a>
   </li>  
@@ -134,91 +146,111 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(2)</span></div><div class="category" data-category="App">App <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data">Data <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Meteo">Meteo <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Programming">Programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div></div></div>
-<!-- main -->
-<main class="content column-page-left" id="quarto-document-content">
-
-
-
-<div id="listing-projects-listings" class="quarto-listing quarto-listing-container-grid">
-<div class="listing-actions-group">
-   <div class="input-group input-group-sm quarto-listing-sort">
-     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-projects-listings-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-projects-listings'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
-       <option value="" disabled="" selected="" hidden="">Order By</option>
-       <option value="index" data-direction="asc">Default</option>
-         <option value="listing-title" data-direction="asc">
-          Title
-        </option>
-         <option value="listing-date-sort" data-direction="asc">
-          Date - Oldest
-        </option>
-         <option value="listing-date-sort" data-direction="desc">
-          Date - Newest
-        </option>
-     </select>
-  </div>
-    <div class="input-group input-group-sm quarto-listing-filter">
-      <span class="input-group-text"><i class="bi bi-search"></i></span>
-      <input type="text" class="search form-control" placeholder="Filter">
     </div>
-</div>
-<div class="list grid quarto-listing-cols-3">
-<div class="g-col-1" data-index="0" data-categories="R,Programming,Data" data-listing-date-sort="1691708400000" data-listing-file-modified-sort="1691767223179" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
-<a href="../projects/community/bolzanor/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://www.bolzanor.eu/img/Rbz2.png" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-BolzanoR
-</h5>
-<div class="card-text listing-description">
-The R community in the center of the Alps
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-8/11/23
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-<div class="g-col-1" data-index="1" data-categories="App,Meteo,Data" data-listing-date-sort="1691276400000" data-listing-file-modified-sort="1691766799596" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
-<a href="../projects/apps/meteobrowser/index.html" class="quarto-grid-link">
-<div class="quarto-grid-item card h-100 card-left">
-<p class="card-img-top">
-<img src="https://github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true" class="thumbnail-image card-img" style="height: 150px;">
-</p>
-<div class="card-body post-contents">
-<h5 class="no-anchor card-title listing-title">
-Meteobrowser
-</h5>
-<div class="card-text listing-description">
-A Shiny App to download the meteorological time series from the Open Data - Province of Bozen
-</div>
-<div class="card-attribution card-text-small end">
-<div class="listing-date">
-8/6/23
-</div>
-</div>
-</div>
-</div>
-</a>
-</div>
-</div>
-<div class="listing-no-matching d-none">
-No matching items
-</div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Solving terra’s “Cannot create raster from single x or y coordinate”</h1>
+  <div class="quarto-categories">
+    <div class="quarto-category">R</div>
+    <div class="quarto-category">terra</div>
+  </div>
+  </div>
+
+<div>
+  <div class="description">
+    You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it
+  </div>
 </div>
 
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Giulio Genova </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">January 16, 2023</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><img src="pattern-8100674_1280_crp.jpg" class="img-fluid"></p>
+<p>In R if you want to convert a table (dataframe) having coordinates into a raster you can use the function <code>rast</code> from the {terra} package.</p>
+<p>Unfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster from.</p>
+<p>The exact error you will get is:</p>
+<p><code>Error: [rast] cannot create a raster geometry from a single x coordinate</code> or <code>Error: [rast] cannot create a raster geometry from a single y coordinate</code></p>
+<p>This was asked on <a href="https://stackoverflow.com/questions/75585028/cannot-create-a-raster-geometry-from-a-single-y-coordinate">Stack Overflow</a> in February 2023</p>
+<p>To avoid this error I wrote a function named <code>rast_singlecoord_safe</code> that can be used just like <code>rast</code></p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You need to provide the x and/or y resolution</p>
+</div>
+</div>
+<p>Here’s the function with a working example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">y =</span> <span class="dv">10</span>, <span class="at">value =</span> <span class="dv">42</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>rast_singlecoord_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x, <span class="at">resx =</span> <span class="cn">NULL</span>, <span class="at">resy =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"xyz"</span>, <span class="at">crs =</span> <span class="st">""</span>,</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits =</span> <span class="dv">6</span>, <span class="at">extent =</span> <span class="cn">NULL</span>) {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x)) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> (<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y)) <span class="sc">==</span> <span class="dv">1</span>)) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resx) <span class="sc">&amp;</span> <span class="fu">is.null</span>(resy)) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">writeLines</span>(<span class="st">"provide at least an x or y resolution"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stop</span>()</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resx)) {</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            resx <span class="ot">&lt;-</span> resy</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resy)) {</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            resy <span class="ot">&lt;-</span> resx</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        additional_coords <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resx,</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resy</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        additional_coords[<span class="fu">setdiff</span>(<span class="fu">names</span>(x), <span class="fu">names</span>(additional_coords))] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, additional_coords)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">trim</span>(rst)</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(rst)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">rast_singlecoord_safe</span>(mydf,<span class="at">resx=</span><span class="dv">50</span>,<span class="at">resy=</span><span class="dv">50</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 
@@ -598,13 +630,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
     <li class="nav-item compact">
-    <a class="nav-link" href="../index.xml">
+    <a class="nav-link" href="../../../index.xml">
       <i class="bi bi-rss" role="img">
 </i> 
     </a>
   </li>  
 </ul>
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/projects/index.qmd" class="toc-action">Edit this page</a></p></div></div></div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/blog/posts/R/index.qmd" class="toc-action">Edit this page</a></p></div></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

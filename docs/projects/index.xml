@@ -29,7 +29,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://giuliogenova.com/projects/community/bolzanor/bolzanor_website.png" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">BolzanoR Website Home Page</figcaption><p></p>
+<figcaption class="figure-caption">BolzanoR Website Home Page</figcaption>
 </figure>
 </div>
 <p><a href="https://www.bolzanor.eu/">https://www.bolzanor.eu/</a></p>
@@ -60,7 +60,7 @@
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="https://giuliogenova.com/projects/apps/meteobrowser/https:/github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true" class="img-fluid figure-img"></p>
-<p></p><figcaption class="figure-caption">MeteoBrowser UI</figcaption><p></p>
+<figcaption class="figure-caption">MeteoBrowser UI</figcaption>
 </figure>
 </div>
 <p>After my master degree I started working as a researcher for <a href="https://www.eurac.edu/en">eurac research</a>. I was working on estimating water needs in apple orchards and I needed meteo data. The province of Bozen provided an API to access the data but no User Interface. So I decided to create one myself… that is how the MeteoBrowser came to life.</p>

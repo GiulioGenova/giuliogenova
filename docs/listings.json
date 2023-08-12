@@ -1,0 +1,21 @@
+[
+  {
+    "listing": "/projects/index.html",
+    "items": [
+      "/projects/community/bolzanor/index.html",
+      "/projects/apps/meteobrowser/index.html"
+    ]
+  },
+  {
+    "listing": "/blog/secret.html",
+    "items": [
+      "/blog/posts/R/index.html"
+    ]
+  },
+  {
+    "listing": "/index.html",
+    "items": [
+      "/blog/posts/R/index.html"
+    ]
+  }
+]
