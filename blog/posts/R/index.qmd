@@ -3,7 +3,7 @@ title: Solving terra's "Cannot create raster from single x or y coordinate"
 description: You cannot create single pixel SpatRast objects from dataframe. Here's my way to solve it
 categories: [R,terra]
 author: Giulio Genova
-date: 2023-01-16
+date: 2023-08-12
 image: https://rspatial.github.io/terra/reference/figures/logo.png
 order: 1
 ---
