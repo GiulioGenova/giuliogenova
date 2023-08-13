@@ -66,7 +66,7 @@ ul.task-list li input[type="checkbox"] {
 <script>
 
   window.document.addEventListener("DOMContentLoaded", function (_event) {
-    const listingTargetEl = window.document.querySelector('#listing-blog-listings .list');
+    const listingTargetEl = window.document.querySelector('#listing-blog-projects-listings .list');
     if (!listingTargetEl) {
       // No listing discovered, do not attach.
       return; 
@@ -79,7 +79,7 @@ ul.task-list li input[type="checkbox"] {
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
-    window['quarto-listings']['listing-blog-listings'] = new List('listing-blog-listings', options);
+    window['quarto-listings']['listing-blog-projects-listings'] = new List('listing-blog-projects-listings', options);
 
     if (window['quarto-listing-loaded']) {
       window['quarto-listing-loaded']();
@@ -121,6 +121,10 @@ ul.task-list li input[type="checkbox"] {
           <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
     <a class="nav-link active" href="./index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./blog.html" rel="" target="">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
@@ -155,11 +159,10 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#blog" id="toc-blog" class="nav-link active" data-scroll-target="#blog">📚 Blog</a></li>
-  <li><a href="#get-in-touch" id="toc-get-in-touch" class="nav-link" data-scroll-target="#get-in-touch">📨 Get In Touch</a></li>
+  <li><a href="#get-in-touch" id="toc-get-in-touch" class="nav-link active" data-scroll-target="#get-in-touch">📨 Get In Touch</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
-    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="terra">terra <span class="quarto-category-count">(1)</span></div></div></div>
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(3)</span></div><div class="category" data-category="App">App <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Data">Data <span class="quarto-category-count">(2)</span></div><div class="category" data-category="Meteo">Meteo <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Programming">Programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(2)</span></div><div class="category" data-category="terra">terra <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
 <main class="content column-page-left" id="quarto-document-content">
 
@@ -176,16 +179,11 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 <p>This website is intended as a <strong>brain dump</strong> containing tips, tricks, news, projects, in the <strong>geospatial modelling and coding</strong> domain</p>
-<!-- ## 📮 Blog Posts
-
-[Subscribe here](#subscribe) -->
-<section id="blog" class="level2">
-<h2 class="anchored" data-anchor-id="blog">📚 Blog</h2>
-<div id="listing-blog-listings" class="quarto-listing quarto-listing-container-grid">
+<div id="listing-blog-projects-listings" class="quarto-listing quarto-listing-container-grid">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
      <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
-     <select id="listing-blog-listings-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-blog-listings'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+     <select id="listing-blog-projects-listings-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-blog-projects-listings'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
        <option value="" disabled="" selected="" hidden="">Order By</option>
        <option value="index" data-direction="asc">Default</option>
          <option value="listing-title" data-direction="asc">
@@ -227,17 +225,55 @@ You cannot create single pixel SpatRast objects from dataframe. Here’s my way 
 </div>
 </a>
 </div>
+<div class="g-col-1" data-index="1" data-categories="R,Programming,Data" data-listing-date-sort="1691708400000" data-listing-file-modified-sort="1691911823416" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="1">
+<a href="./projects/community/bolzanor/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="https://www.bolzanor.eu/img/Rbz2.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+BolzanoR
+</h5>
+<div class="card-text listing-description">
+The R community in the center of the Alps
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+8/11/23
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="App,Meteo,Data" data-listing-date-sort="1691276400000" data-listing-file-modified-sort="1691911823412" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2">
+<a href="./projects/apps/meteobrowser/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="https://github.com/GiulioGenova/MeteoBrowser/blob/master/MeteoBrowser.PNG?raw=true" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Meteobrowser
+</h5>
+<div class="card-text listing-description">
+A Shiny App to download the meteorological time series from the Open Data - Province of Bozen
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+8/6/23
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
 </div>
 <div class="listing-no-matching d-none">
 No matching items
 </div>
 </div>
-<!-- ## 📬 Subscribe
-
-Subscribe via [<i class="bi bi-rss"></i> RSS](index.xml) or enter your email below:
-
-<script async data-uid="f405c5ca98" src="https://hamel.ck.page/f405c5ca98/index.js"></script> -->
-</section>
 <section id="get-in-touch" class="level2">
 <h2 class="anchored" data-anchor-id="get-in-touch">📨 Get In Touch</h2>
 <p>Email me at <code>giulio.genova@proton.me</code> if you’d like to chat!</p>

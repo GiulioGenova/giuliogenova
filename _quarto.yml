@@ -37,8 +37,10 @@ website:
     collapse: false
     left:
     # 🏠 📮 👨🏽‍💻 🍎 🎤 📚 📧 📨
-    - text: "Blog"
+    - text: "Home"
       href: index.qmd
+    - text: "Blog"
+      href: blog.qmd
     - text: Projects
       file: projects/index.qmd
     - text: Publications 

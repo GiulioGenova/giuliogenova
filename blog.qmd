@@ -1,0 +1,31 @@
+---
+sidebar: false
+description: "A collection of technical blogs and tips on coding, machine learning and spatial data science."
+image: quarto.png
+toc: true
+listing:
+  date-format: short
+  feed: true
+  filter-ui: true
+  type: grid
+  sort-ui: true
+  sort: "date desc"
+  categories: true
+  fields: [image, date, title, description]
+  id: blog-listings
+  contents: [blog/posts]
+aliases: ["blog/"]
+page-layout: full
+format:
+  html:
+    anchor-sections: true
+---
+
+<!-- ## 📮 Blog Posts
+
+[Subscribe here](#subscribe) -->
+
+This section lists blog entries, notes and miscellaneous items
+
+::: {#blog-listings}
+:::

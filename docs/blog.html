@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="description" content="A list of my papers and conferences (talks or posters)">
+<meta name="description" content="A collection of technical blogs and tips on coding, machine learning and spatial data science.">
 
-<title>Giulio’s Blog - Publications</title>
+<title>Giulio's Blog – blog</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,6 +31,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./Letter_G_blue_35003.ico" rel="icon">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -61,17 +63,41 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script>
 
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-blog-listings .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-image','listing-date','listing-title','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-blog-listings'] = new List('listing-blog-listings', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="mystyles.css">
-<meta property="og:title" content="Giulio’s Blog - Publications">
-<meta property="og:description" content="A list of my papers and conferences (talks or posters)">
-<meta property="og:site-name" content="Giulio's Blog">
-<meta name="twitter:title" content="Giulio’s Blog - Publications">
-<meta name="twitter:description" content="A list of my papers and conferences (talks or posters)">
-<meta name="twitter:creator" content="@giuliogenova">
-<meta name="twitter:card" content="summary">
-</head>
+<link rel="alternate" type="application/rss+xml" title="Giulio's Blog" href="blog.xml"></head>
 
 <body class="nav-fixed">
 
@@ -85,7 +111,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Home</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./blog.html" rel="" target="">
+    <a class="nav-link active" href="./blog.html" rel="" target="" aria-current="page">
  <span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
@@ -93,7 +119,7 @@ ul.task-list li input[type="checkbox"] {
  <span class="menu-text">Projects</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link active" href="./publications.html" rel="" target="" aria-current="page">
+    <a class="nav-link" href="./publications.html" rel="" target="">
  <span class="menu-text">Publications</span></a>
   </li>  
 </ul>
@@ -112,70 +138,75 @@ ul.task-list li input[type="checkbox"] {
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
-   
-  <ul>
-  <li><a href="#awards" id="toc-awards" class="nav-link active" data-scroll-target="#awards">Awards</a></li>
-  <li><a href="#papers" id="toc-papers" class="nav-link" data-scroll-target="#papers">Papers</a></li>
-  <li><a href="#conferences" id="toc-conferences" class="nav-link" data-scroll-target="#conferences">Conferences</a></li>
-  </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/publications.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
-    </div>
+        
+    <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(1)</span></div><div class="category" data-category="R">R <span class="quarto-category-count">(1)</span></div><div class="category" data-category="terra">terra <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content column-page-left" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Publications</h1>
+
+
+<!-- ## 📮 Blog Posts
+
+[Subscribe here](#subscribe) -->
+<p>This section lists blog entries, notes and miscellaneous items</p>
+<div id="listing-blog-listings" class="quarto-listing quarto-listing-container-grid">
+<div class="listing-actions-group">
+   <div class="input-group input-group-sm quarto-listing-sort">
+     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
+     <select id="listing-blog-listings-sort" class="form-select" aria-label="Order By" onchange="window['quarto-listings']['listing-blog-listings'].sort(this.options[this.selectedIndex].value, { order: this.options[this.selectedIndex].getAttribute('data-direction')})">
+       <option value="" disabled="" selected="" hidden="">Order By</option>
+       <option value="index" data-direction="asc">Default</option>
+         <option value="listing-title" data-direction="asc">
+          Title
+        </option>
+         <option value="listing-date-sort" data-direction="asc">
+          Date - Oldest
+        </option>
+         <option value="listing-date-sort" data-direction="desc">
+          Date - Newest
+        </option>
+     </select>
+  </div>
+    <div class="input-group input-group-sm quarto-listing-filter">
+      <span class="input-group-text"><i class="bi bi-search"></i></span>
+      <input type="text" class="search form-control" placeholder="Filter">
+    </div>
+</div>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="R,terra" data-listing-date-sort="1691794800000" data-listing-file-modified-sort="1691911823400" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="3">
+<a href="./blog/posts/R/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="https://rspatial.github.io/terra/reference/figures/logo.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Solving terra’s “Cannot create raster from single x or y coordinate”
+</h5>
+<div class="card-text listing-description">
+You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it
+</div>
+<div class="card-attribution card-text-small end">
+<div class="listing-date">
+8/12/23
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
 </div>
 
-<div>
-  <div class="description">
-    A list of my papers and conferences (talks or posters)
-  </div>
-</div>
 
 
-<div class="quarto-title-meta">
-
-    
-  
-    
-  </div>
-  
-
-</header>
-
-<p>Have a look at my <a href="https://scholar.google.com/citations?user=pdwaOmMAAAAJ&amp;hl=en">Google Scholar</a> and <a href="https://orcid.org/0000-0001-9412-8651">ORCID</a>, they are probably more reliable and up to date than the following list</p>
-<section id="awards" class="level2">
-<h2 class="anchored" data-anchor-id="awards">Awards</h2>
-<p>Well… I only got one but you never know.. better start a section!</p>
-<ul>
-<li><a href="https://www.eurac.edu/en/open-science/open-research/open-research-award-2023/open-research-award-2021">Early Career - Open Research Award - Eurac researc</a>
-<ul>
-<li><a href="https://www.eurac.edu/it/magazine/quelli-che-l-excel-non-gli-basta-piu">Interview</a></li>
-<li><a href="https://webassets.eurac.edu/31538/1664207297-ora-genova_rossi-nomination.pdf">Nomination</a></li>
-</ul></li>
-</ul>
-</section>
-<section id="papers" class="level2">
-<h2 class="anchored" data-anchor-id="papers">Papers</h2>
-<ul>
-<li><a href="https://www.sciencedirect.com/science/article/pii/S030438942101596X">Copper and zinc as a window to past agricultural land-use</a></li>
-<li><a href="https://www.tandfonline.com/doi/full/10.1080/17445647.2019.1633962">Phytoavailable phosphorus (P2O5) and potassium (K2O) in topsoil for apple orchards and vineyards, South Tyrol, Italy</a></li>
-<li><a href="https://www.nature.com/articles/s41598-022-05440-3">Topography of the Dolomites modulates range dynamics of narrow endemic plants under climate change</a></li>
-</ul>
-</section>
-<section id="conferences" class="level2">
-<h2 class="anchored" data-anchor-id="conferences">Conferences</h2>
-
-
-</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -559,7 +590,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
 </ul>
-    </div>
+    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/blog.qmd" class="toc-action">Edit this page</a></p></div></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

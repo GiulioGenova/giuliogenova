@@ -11,7 +11,7 @@
     "href": "projects/index.html",
     "title": "Giulio's Blog",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBolzanoR\n\n\nThe R community in the center of the Alps\n\n\n\n8/11/23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeteobrowser\n\n\nA Shiny App to download the meteorological time series from the Open Data - Province of Bozen\n\n\n\n8/6/23\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "Here’s a list of projects I worked on. These can be coding, social or other kinds of projects\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nBolzanoR\n\n\nThe R community in the center of the Alps\n\n\n\n8/11/23\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMeteobrowser\n\n\nA Shiny App to download the meteorological time series from the Open Data - Province of Bozen\n\n\n\n8/6/23\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "projects/apps/meteobrowser/index.html",
@@ -40,13 +40,6 @@
     "title": "Giulio's Blog",
     "section": "",
     "text": "Digital Soil Mapping Expert dealing with spatial modelling of soil properties, machine learning, High Performance Computing. As a PhD candidate in Mountain Environment and Agriculture at the University of Bozen/Bolzano in collaboration with Eurac research I was mainly interested in modelling the spatial distribution of soil properties, the role of trace metals in soil functioning, and water use efficiency in agriculture. I use a data science approach to answer scientific questions. I love open source software and open data.\nThis website is intended as a brain dump containing tips, tricks, news, projects, in the geospatial modelling and coding domain"
-  },
-  {
-    "objectID": "index.html#blog",
-    "href": "index.html#blog",
-    "title": "Giulio's Blog",
-    "section": "📚 Blog",
-    "text": "📚 Blog\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n8/12/23\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#get-in-touch",
@@ -82,5 +75,12 @@
     "title": "Publications",
     "section": "Conferences",
     "text": "Conferences"
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Giulio's Blog",
+    "section": "",
+    "text": "This section lists blog entries, notes and miscellaneous items\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n8/12/23\n\n\n\n\n\n\n\n\nNo matching items"
   }
 ]

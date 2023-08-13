@@ -21,5 +21,7 @@ format:
     anchor-sections: true
 ---
 
+Here's a list of projects I worked on. These can be coding, social or other kinds of projects
+
 ::: {#projects-listings}
 :::

@@ -12,8 +12,8 @@ listing:
   sort: "date desc"
   categories: true
   fields: [image, date, title, description]
-  id: blog-listings
-  contents: [blog/posts]
+  id: blog-projects-listings
+  contents: [blog/posts,projects/apps,projects/community]
 aliases: ["blog/"]
 page-layout: full
 format:
@@ -30,21 +30,8 @@ Digital Soil Mapping Expert dealing with spatial modelling of soil properties, m
 
 This website is intended as a **brain dump** containing tips, tricks, news, projects, in the **geospatial modelling and coding** domain
 
-
-<!-- ## 📮 Blog Posts
-
-[Subscribe here](#subscribe) -->
-
-## 📚 Blog
-
-::: {#blog-listings}
+::: {#blog-projects-listings}
 :::
-
-<!-- ## 📬 Subscribe
-
-Subscribe via [<i class="bi bi-rss"></i> RSS](index.xml) or enter your email below:
-
-<script async data-uid="f405c5ca98" src="https://hamel.ck.page/f405c5ca98/index.js"></script> -->
 
 ## 📨 Get In Touch
 
