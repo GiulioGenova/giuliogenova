@@ -32,7 +32,7 @@
     "href": "blog/secret.html",
     "title": "Giulio’s Blog",
     "section": "",
-    "text": "This page is supposed to be secret!\n\n\n\nA listing of all my blog posts can be found here\n\n\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\n\n\n\n\n\nR\n\n\nterra\n\n\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n\n\n\nJan 16, 2023\n\n\nGiulio Genova\n\n\n\n\n\n\nNo matching items"
+    "text": "This page is supposed to be secret!\n\n\n\nA listing of all my blog posts can be found here\n\n\n\n\n\n\n\n\n    \n      \n      \n    \n\n\n\n\n  \n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\n\n\n\n\n\nR\n\n\nterra\n\n\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n\n\n\nAug 12, 2023\n\n\nGiulio Genova\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -46,7 +46,7 @@
     "href": "index.html#blog",
     "title": "Giulio's Blog",
     "section": "📚 Blog",
-    "text": "📚 Blog\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n1/16/23\n\n\n\n\n\n\n\n\nNo matching items"
+    "text": "📚 Blog\n\n\n   \n     \n     \n       Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nSolving terra’s “Cannot create raster from single x or y coordinate”\n\n\nYou cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it\n\n\n\n8/12/23\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html#get-in-touch",
