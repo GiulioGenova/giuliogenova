@@ -2,22 +2,15 @@ library(terra)
 mydf <- data.frame(x = 10, y = 10, value = 42)
 
 rast_singlecoord_safe <- function(
-    x, resx = NULL, resy = NULL, type = "xyz", crs = "",
+    x, resolution = NULL, type = "xyz", crs = "",
     digits = 6, extent = NULL) {
     if ((length(unique(x$x)) == 1) | (length(unique(x$y)) == 1)) {
-        if (is.null(resx) & is.null(resy)) {
-            writeLines("provide at least an x or y resolution")
-            stop()
-        }
-        if (is.null(resx)) {
-            resx <- resy
-        }
-        if (is.null(resy)) {
-            resy <- resx
+        if ( is.null(resolution)) {
+            stop("provide the resolution of the raster")
         }
         additional_coords <- data.frame(
-            x = min(unique(x$x), na.rm = TRUE) + resx,
-            y = min(unique(x$y), na.rm = TRUE) + resy
+            x = min(unique(x$x), na.rm = TRUE) + resolution,
+            y = min(unique(x$y), na.rm = TRUE) + resolution
         )
         additional_coords[setdiff(names(x), names(additional_coords))] <- NA
         x <- rbind(x, additional_coords)
@@ -33,4 +26,4 @@ rast_singlecoord_safe <- function(
     return(rst)
 }
 
-rast_singlecoord_safe(mydf,resx=23)
+plot(rast_singlecoord_safe(mydf,resolution = 100))

@@ -204,9 +204,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <p><img src="pattern-8100674_1280_crp.jpg" class="img-fluid"></p>
 <p>In R if you want to convert a table (dataframe) having coordinates into a raster you can use the function <code>rast</code> from the {terra} package.</p>
-<p>Unfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster from.</p>
+<p>Unfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster.</p>
 <p>The exact error you will get is:</p>
-<p><code>Error: [rast] cannot create a raster geometry from a single x coordinate</code> or <code>Error: [rast] cannot create a raster geometry from a single y coordinate</code></p>
+<p><code>Error: [rast] cannot create a raster geometry from a single x coordinate</code><br>
+or <code>Error: [rast] cannot create a raster geometry from a single y coordinate</code></p>
 <p>This was asked on <a href="https://stackoverflow.com/questions/75585028/cannot-create-a-raster-geometry-from-a-single-y-coordinate">Stack Overflow</a> in February 2023</p>
 <p>To avoid this error I wrote a function named <code>rast_singlecoord_safe</code> that can be used just like <code>rast</code></p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -219,7 +220,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>You need to provide the x and/or y resolution</p>
+<p>You need to provide the resolution of the raster. The function assumes squared pixels</p>
 </div>
 </div>
 <p>Here’s the function with a working example:</p>
@@ -227,39 +228,31 @@ Warning
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">y =</span> <span class="dv">10</span>, <span class="at">value =</span> <span class="dv">42</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>rast_singlecoord_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x, <span class="at">resx =</span> <span class="cn">NULL</span>, <span class="at">resy =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"xyz"</span>, <span class="at">crs =</span> <span class="st">""</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x, <span class="at">resolution =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"xyz"</span>, <span class="at">crs =</span> <span class="st">""</span>,</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits =</span> <span class="dv">6</span>, <span class="at">extent =</span> <span class="cn">NULL</span>) {</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x)) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> (<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y)) <span class="sc">==</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resx) <span class="sc">&amp;</span> <span class="fu">is.null</span>(resy)) {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">writeLines</span>(<span class="st">"provide at least an x or y resolution"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stop</span>()</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resx)) {</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            resx <span class="ot">&lt;-</span> resy</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">is.null</span>(resy)) {</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>            resy <span class="ot">&lt;-</span> resx</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>        additional_coords <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resx,</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resy</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        additional_coords[<span class="fu">setdiff</span>(<span class="fu">names</span>(x), <span class="fu">names</span>(additional_coords))] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, additional_coords)</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">trim</span>(rst)</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
-<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(rst)</span>
-<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">rast_singlecoord_safe</span>(mydf,<span class="at">resx=</span><span class="dv">50</span>,<span class="at">resy=</span><span class="dv">50</span>)</span>
-<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ( <span class="fu">is.null</span>(resolution)) {</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stop</span>(<span class="st">"provide the resolution of the raster"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        additional_coords <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resolution,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resolution</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        additional_coords[<span class="fu">setdiff</span>(<span class="fu">names</span>(x), <span class="fu">names</span>(additional_coords))] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, additional_coords)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">trim</span>(rst)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(rst)</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">rast_singlecoord_safe</span>(mydf,<span class="at">resolution =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 
 
