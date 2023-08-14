@@ -45,6 +45,8 @@ website:
       file: projects/index.qmd
     - text: Publications 
       file: publications.qmd
+    - icon: compass
+      file: sitemap.xml
     right:
       - icon: rss
         href: index.xml
