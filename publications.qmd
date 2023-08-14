@@ -25,3 +25,7 @@ Well... I only got one but you never know.. better start a section!
 
 
 ## Conferences
+
+## Talks
+
+- [SFScon19 - Giulio Genova - Meteo Browser South Tyrol](https://vimeo.com/376173534)
