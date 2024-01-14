@@ -7,10 +7,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Giulio Genova">
-<meta name="dcterms.date" content="2023-12-08">
-<meta name="description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
+<meta name="description" content="How to read assets from Google Earth engine directly from">
 
-<title>Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”</title>
+<title>Giulio’s Blog - Reading assets from Google Earth Engine with gdal and R {terra}</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,13 +99,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 
 <link rel="stylesheet" href="../../../mystyles.css">
-<meta property="og:title" content="Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”">
-<meta property="og:description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
-<meta property="og:image" content="https://rspatial.github.io/terra/reference/figures/logo.png">
+<meta property="og:title" content="Giulio’s Blog - Reading assets from Google Earth Engine with gdal and R {terra}">
+<meta property="og:description" content="How to read assets from Google Earth engine directly from">
+<meta property="og:image" content="https://earthengine.google.com/static/images/earth-engine-logo.png">
 <meta property="og:site-name" content="Giulio's Blog">
-<meta name="twitter:title" content="Giulio’s Blog - Solving terra’s “Cannot create raster from single x or y coordinate”">
-<meta name="twitter:description" content="You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it">
-<meta name="twitter:image" content="https://rspatial.github.io/terra/reference/figures/logo.png">
+<meta name="twitter:title" content="Giulio’s Blog - Reading assets from Google Earth Engine with gdal and R {terra}">
+<meta name="twitter:description" content="How to read assets from Google Earth engine directly from">
+<meta name="twitter:image" content="https://earthengine.google.com/static/images/earth-engine-logo.png">
 <meta name="twitter:creator" content="@giuliogenova">
 <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -159,15 +158,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#intro-and-aim" id="toc-intro-and-aim" class="nav-link active" data-scroll-target="#intro-and-aim">Intro and aim</a></li>
+  <li><a href="#stack-requirements" id="toc-stack-requirements" class="nav-link" data-scroll-target="#stack-requirements">Stack requirements</a></li>
+  <li><a href="#setup" id="toc-setup" class="nav-link" data-scroll-target="#setup">Setup</a></li>
+  <li><a href="#gdal-on-linux" id="toc-gdal-on-linux" class="nav-link" data-scroll-target="#gdal-on-linux">Gdal (on linux)</a></li>
+  <li><a href="#r-terra" id="toc-r-terra" class="nav-link" data-scroll-target="#r-terra">R terra</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/blog/posts/GEE/old.index.qmd" class="toc-action">Edit this page</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Solving terra’s “Cannot create raster from single x or y coordinate”</h1>
+<h1 class="title">Reading assets from Google Earth Engine with gdal and R {terra}</h1>
   <div class="quarto-categories">
+    <div class="quarto-category">GEE</div>
+    <div class="quarto-category">gdal</div>
     <div class="quarto-category">R</div>
     <div class="quarto-category">terra</div>
   </div>
@@ -175,7 +186,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div>
   <div class="description">
-    You cannot create single pixel SpatRast objects from dataframe. Here’s my way to solve it
+    How to read assets from Google Earth engine directly from
   </div>
 </div>
 
@@ -192,7 +203,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">12/08/2023</p>
+      <p class="date">14/01/2024</p>
     </div>
   </div>
   
@@ -202,59 +213,154 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p><img src="pattern-8100674_1280_crp.jpg" class="img-fluid"></p>
-<p>In R if you want to convert a table (dataframe) having coordinates into a raster you can use the function <code>rast</code> from the {terra} package.</p>
-<p>Unfortunately if your dataframe has only one unique x or y coordinate you will get an error. This is because {terra} cannot infer the resolution of the raster.</p>
-<p>The exact error you will get is:</p>
-<p><code>Error: [rast] cannot create a raster geometry from a single x coordinate</code><br>
-or <code>Error: [rast] cannot create a raster geometry from a single y coordinate</code></p>
-<p>This was asked on <a href="https://stackoverflow.com/questions/75585028/cannot-create-a-raster-geometry-from-a-single-y-coordinate">Stack Overflow</a> in February 2023</p>
-<p>To avoid this error I wrote a function named <code>rast_singlecoord_safe</code> that can be used just like <code>rast</code></p>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
+<p><img src="DALL·E 2024-01-14 16.48.53 - The image depicts a wide-angle view of a computer setup with a large monitor displaying a complex spatial layer, similar to those seen in Google Earth.png" class="img-fluid"></p>
+<section id="intro-and-aim" class="level1">
+<h1>Intro and aim</h1>
+<p>Google Earth Engine (GEE) stores petabytes and petabytes of (not only) Earth Observation data. And the great thing is that you can run analysis directly in the cloud. This means that in principle the only thing you have to get out of GEE are your results (summary statistics, plots, final maps, etc.). But sometimes you want to run part of your analysis using your system and for this you will need to access (or download) raw or preprocessed data from GEE. Recently <a href="https://github.com/google/Xee">XEE</a> came out and looks like a game changer. But there is yet another (maybe overlooked) way of accessing GEE data directly from your machine. And that is using gdal and any other software built on top of it (like the R {terra} package).</p>
+<p>I was inspired by this <a href="https://humus.rocks/post/2022/06/23/using-the-terra-r-package-to-view-download-and-analyze-google-earth-engine-images/">blog post</a> by Andrew Brown, and decided to give it a try myself</p>
+</section>
+<section id="stack-requirements" class="level1">
+<h1>Stack requirements</h1>
+<p>Make sure you have the following:</p>
+<ul>
+<li><a href="https://code.earthengine.google.com/">GEE account (and connected google cloud project, created when creating a GEE account)</a></li>
+<li><a href="https://gdal.org/download.html">gdal</a></li>
+<li><a href="https://www.r-project.org/">R</a> and the package <a href="https://cran.r-project.org/web/packages/terra/index.html">{terra}</a></li>
+</ul>
+</section>
+<section id="setup" class="level1">
+<h1>Setup</h1>
+<p>You will need to go through the following steps in order to access GEE data from your machine. I am not adding screenshots or specific ways to do it as things may change in the future and there are always more than one way to do it. What you want to have at the end is a service account for the GEE API and generate the credentials to use it on your machine</p>
+<ul>
+<li>Go to https://console.cloud.google.com/</li>
+<li>Select the cloud project you use with Google Earth Engine</li>
+<li>Go to APIs and Services and enable the Google Earth Engine API</li>
+<li>Create a service account</li>
+<li>Generate the credentials .json file and save it somewhere on your machine</li>
+</ul>
+</section>
+<section id="gdal-on-linux" class="level1">
+<h1>Gdal (on linux)</h1>
+<p>Once everything is setup we can access the data. Gdal as a command line tool is quite convenient and powerful.</p>
+<p>As dataset I choose to get the DEM <a href="https://developers.google.com/earth-engine/datasets/catalog/MERIT_DEM_v1_0_3">Merit</a>. This is a single, global, image with one band (“dem”), that makes it easier for example purposes.</p>
+<p>First I create and environment variable with the location of my credentials file.</p>
+<p>Then I run gdalinfo on the dataset location adding the “EEDAI:” prefix. This tells gdal that the dataset is stored on google earth engine and to use the appropriate protocol.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GOOGLE_APPLICATION_CREDENTIALS</span><span class="op">=</span><span class="st">"</span><span class="va">$HOME</span><span class="st">/gee/ee-credentials.json"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="ex">gdalinfo</span> EEDAI:MERIT/DEM/v1_0_3</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Driver: EEDAI/Earth Engine Data API Image
+Files: none associated
+Size is 432000, 174000
+Coordinate System is:
+GEOGCRS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        ELLIPSOID["WGS 84",6378137,298.257223563,
+            LENGTHUNIT["metre",1]]],
+    PRIMEM["Greenwich",0,
+        ANGLEUNIT["degree",0.0174532925199433]],
+    CS[ellipsoidal,2],
+        AXIS["geodetic latitude (Lat)",north,
+            ORDER[1],
+            ANGLEUNIT["degree",0.0174532925199433]],
+        AXIS["geodetic longitude (Lon)",east,
+            ORDER[2],
+            ANGLEUNIT["degree",0.0174532925199433]],
+    ID["EPSG",4326]]
+Data axis to CRS axis mapping: 2,1
+Origin = (-180.000416666666666,84.999583333333334)
+Pixel Size = (0.000833333333333,-0.000833333333333)
+Corner Coordinates:
+Upper Left  (-180.0004167,  84.9995833) (180d 0' 1.50"W, 84d59'58.50"N)
+Lower Left  (-180.0004167, -60.0004167) (180d 0' 1.50"W, 60d 0' 1.50"S)
+Upper Right ( 179.9995833,  84.9995833) (179d59'58.50"E, 84d59'58.50"N)
+Lower Right ( 179.9995833, -60.0004167) (179d59'58.50"E, 60d 0' 1.50"S)
+Center      (  -0.0004167,  12.4995833) (  0d 0' 1.50"W, 12d29'58.50"N)
+Band 1 Block=256x256 Type=Float32, ColorInterp=Undefined
+  Description = dem
+  Overviews: 216000x87000, 108000x43500, 54000x21750, 27000x10875, 13500x5437, 6750x2718, 3375x1359, 1687x679, 843x339, 421x169, 210x84</code></pre>
 </div>
-<div class="callout-title-container flex-fill">
-Warning
+</div>
+<p>And there you go you have the information about the dataset.</p>
+<p>Once you know it is working you can use all the other gdal tools tile <code>gdalwarp</code> <code>gdal_traslate</code> etc.</p>
+</section>
+<section id="r-terra" class="level1">
+<h1>R terra</h1>
+<p>{terra} uses gdal to read raster data. This means that the same dataset can be read into R just like we did with gdal.</p>
+<p>Similarly to the example with gdal we set an environment variable that stores the credentials file and the we read the dataset (with EEDAI:) with the <code>rast()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>terra 1.7.37</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">GOOGLE_APPLICATION_CREDENTIALS=</span><span class="fu">file.path</span>(<span class="fu">path.expand</span>(<span class="st">'~'</span>),<span class="st">"gee/ee-credentials.json"</span>))</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rst <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">"EEDAI:MERIT/DEM/v1_0_3"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now the asset can be accessed with all the functions available in {terra}. We can print the object and plot it. Plotting is fast even if it is a global layer at 90 meters resolution because terra only gets a sample of if, just enough to give a nice image at the resolution you need.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 174000, 432000, 1  (nrow, ncol, nlyr)
+resolution  : 0.0008333333, 0.0008333333  (x, y)
+extent      : -180.0004, 179.9996, -60.00042, 84.99958  (xmin, xmax, ymin, ymax)
+coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+source      : v1_0_3 
+name        : dem </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rst,<span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">5000</span>)) <span class="co"># wide range for global DEM</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="old.index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="callout-body-container callout-body">
-<p>You need to provide the resolution of the raster. The function assumes squared pixels</p>
+<p>Now we select a spatial subset with the <code>window()</code> function by defining a bounding box</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>xmin <span class="ot">=</span> <span class="dv">28</span> <span class="co">#bounding box xmin</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>xmax <span class="ot">=</span> <span class="dv">29</span> <span class="co">#bounding box xmax</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>ymin <span class="ot">=</span> <span class="sc">-</span><span class="dv">3</span> <span class="co">#bounding box ymin</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>ymax <span class="ot">=</span> <span class="sc">-</span><span class="dv">2</span> <span class="co">#bounding box ymax</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>bb<span class="ot">=</span><span class="fu">ext</span>(<span class="fu">c</span>(xmin,xmax,ymin,ymax))</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">window</span>(rst) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="fu">window</span>(rst) <span class="ot">=</span> bb</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(rst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>class       : SpatRaster 
+dimensions  : 1200, 1200, 1  (nrow, ncol, nlyr)
+resolution  : 0.0008333333, 0.0008333333  (x, y)
+window      : 28.00042, 29.00042, -2.999583, -1.999583  (xmin, xmax, ymin, ymax)
+coord. ref. : lon/lat WGS 84 (EPSG:4326) 
+source      : v1_0_3 
+name        : dem </code></pre>
 </div>
 </div>
-<p>Here’s the function with a working example:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>mydf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">x =</span> <span class="dv">10</span>, <span class="at">y =</span> <span class="dv">10</span>, <span class="at">value =</span> <span class="dv">42</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>rast_singlecoord_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    x, <span class="at">resolution =</span> <span class="cn">NULL</span>, <span class="at">type =</span> <span class="st">"xyz"</span>, <span class="at">crs =</span> <span class="st">""</span>,</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits =</span> <span class="dv">6</span>, <span class="at">extent =</span> <span class="cn">NULL</span>) {</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x)) <span class="sc">==</span> <span class="dv">1</span>) <span class="sc">|</span> (<span class="fu">length</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y)) <span class="sc">==</span> <span class="dv">1</span>)) {</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ( <span class="fu">is.null</span>(resolution)) {</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">stop</span>(<span class="st">"provide the resolution of the raster"</span>)</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>        additional_coords <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>            <span class="at">x =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>x), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resolution,</span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>            <span class="at">y =</span> <span class="fu">min</span>(<span class="fu">unique</span>(x<span class="sc">$</span>y), <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> resolution</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>        additional_coords[<span class="fu">setdiff</span>(<span class="fu">names</span>(x), <span class="fu">names</span>(additional_coords))] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>        x <span class="ot">&lt;-</span> <span class="fu">rbind</span>(x, additional_coords)</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">trim</span>(rst)</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>        rst <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">rast</span>(x,</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>            <span class="at">type =</span> type, <span class="at">crs =</span> crs, <span class="at">digits =</span> digits, <span class="at">extent=</span>extent</span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>        )</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(rst)</span>
-<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="fu">rast_singlecoord_safe</span>(mydf,<span class="at">resolution =</span> <span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We can now get summary statistics from the area with the <code>summary()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rst)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: [summary] used a sample</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      dem        
+ Min.   : 641.1  
+ 1st Qu.:1175.5  
+ Median :1448.5  
+ Mean   :1508.9  
+ 3rd Qu.:1750.8  
+ Max.   :3431.0  </code></pre>
+</div>
+</div>
+<p>And plot the area with an appropriate value range</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(rst,<span class="at">range=</span><span class="fu">c</span>(<span class="dv">650</span>,<span class="dv">3500</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="old.index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -638,7 +744,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </a>
   </li>  
 </ul>
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/GiulioGenova/giuliogenova.com/edit/main/blog/posts/R/index.qmd" class="toc-action">Edit this page</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

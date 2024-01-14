@@ -9,12 +9,16 @@
   {
     "listing": "/blog/secret.html",
     "items": [
+      "/blog/posts/GEE/index.html",
+      "/blog/posts/GEE/old.index.html",
       "/blog/posts/R/index.html"
     ]
   },
   {
     "listing": "/index.html",
     "items": [
+      "/blog/posts/GEE/index.html",
+      "/blog/posts/GEE/old.index.html",
       "/blog/posts/R/index.html",
       "/projects/community/bolzanor/index.html",
       "/projects/apps/meteobrowser/index.html"
@@ -23,6 +27,8 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/posts/GEE/index.html",
+      "/blog/posts/GEE/old.index.html",
       "/blog/posts/R/index.html"
     ]
   }

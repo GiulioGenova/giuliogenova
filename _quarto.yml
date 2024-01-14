@@ -2,11 +2,14 @@ project:
   type: website
   output-dir: docs
 
+date-format: "DD/MM/YYYY"
+
 resources:
   - CNAME
 
 exeucte:
-  eval: false
+  #eval: false
+  freeze: auto
 
 website:
   title: "Giulio's Blog"

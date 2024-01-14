@@ -1,0 +1,130 @@
+---
+title: Reading assets from Google Earth Engine with gdal and R {terra}
+description: How to read assets from Google Earth engine directly from 
+categories: [GEE,gdal,R,terra]
+author: Giulio Genova
+date: today
+image: https://earthengine.google.com/static/images/earth-engine-logo.png
+order: 1
+---
+
+![](DALL·E 2024-01-14 16.48.53 - The image depicts a wide-angle view of a computer setup with a large monitor displaying a complex spatial layer, similar to those seen in Google Earth.png)
+
+# Intro and aim
+
+Google Earth Engine (GEE) stores petabytes and petabytes of (not only) Earth
+Observation data. And the great thing is that you can run analysis directly in the cloud.
+This means that in principle the only thing you have to get out of GEE are your
+ results (summary statistics, plots, final maps, etc.). But sometimes you want 
+ to run part of your analysis using your system and for this you will need to access
+ (or download) raw or preprocessed data from GEE.
+Recently [XEE](https://github.com/google/Xee) came out and looks like a game changer.
+But there is yet another (maybe overlooked) way of accessing GEE data directly from 
+your machine. And that is using gdal and any other software built on top of it (like the R {terra} package).
+
+I was inspired by this [blog post](https://humus.rocks/post/2022/06/23/using-the-terra-r-package-to-view-download-and-analyze-google-earth-engine-images/) by Andrew Brown,
+and decided to give it a try myself
+
+
+# Stack requirements
+
+Make sure you have the following:
+
+- [GEE account (and connected google cloud project, created when creating a GEE account)](https://code.earthengine.google.com/)
+- [gdal](https://gdal.org/download.html)
+- [R](https://www.r-project.org/) and the package [{terra}](https://cran.r-project.org/web/packages/terra/index.html)
+
+# Setup
+
+You will need to go through the following steps in order to access GEE data from your machine.
+I am not adding screenshots or specific ways to do it as things may change in 
+the future and there are always more than one way to do it.
+What you want to have at the end is a service account for the GEE API and 
+generate the credentials to use it on your machine
+
+- Go to https://console.cloud.google.com/
+- Select the cloud project you use with Google Earth Engine
+- Go to APIs and Services and enable the Google Earth Engine API
+- Create a service account
+- Generate the credentials .json file and save it somewhere on your machine
+
+# Gdal (on linux)
+
+Once everything is setup we can access the data. Gdal as a command line tool
+is quite convenient and powerful.
+
+As dataset I choose to get the DEM [Merit](https://developers.google.com/earth-engine/datasets/catalog/MERIT_DEM_v1_0_3).
+This is a single, global, image with one band ("dem"), that makes it easier 
+for example purposes.
+
+First I create and environment variable with the location of my credentials file.
+
+Then I run gdalinfo on the dataset location adding the "EEDAI:" prefix. This tells
+gdal that the dataset is stored on google earth engine and to use the appropriate protocol.
+
+```{bash}
+export GOOGLE_APPLICATION_CREDENTIALS="$HOME/gee/ee-credentials.json"
+gdalinfo EEDAI:MERIT/DEM/v1_0_3
+```
+
+
+And there you go you have the information about the dataset.
+
+Once you know it is working you can use all the other gdal tools tile `gdalwarp`
+`gdal_traslate` etc.
+
+
+# R terra
+{terra} uses gdal to read raster data. This means that the same dataset can
+be read into R just like we did with gdal.
+
+Similarly to the example with gdal we set an environment variable that stores
+the credentials file and the we read the dataset (with EEDAI:) with the `rast()`
+function.
+
+```{r}
+library(terra)
+Sys.setenv(GOOGLE_APPLICATION_CREDENTIALS=file.path(path.expand('~'),"gee/ee-credentials.json"))
+
+rst <- rast("EEDAI:MERIT/DEM/v1_0_3")
+```
+
+Now the asset can be accessed with all the functions available in {terra}.
+We can print the object and plot it. Plotting is fast even if it is a global 
+layer at 90 meters resolution because terra only gets a sample of if, just
+enough to give a nice image at the resolution you need.
+
+```{r}
+print(rst)
+plot(rst,range=c(0,5000)) # wide range for global DEM
+```
+
+Now we select a spatial subset with the `window()` function by defining a 
+bounding box
+```{r}
+xmin = 28 #bounding box xmin
+xmax = 29 #bounding box xmax
+ymin = -3 #bounding box ymin
+ymax = -2 #bounding box ymax
+
+bb=ext(c(xmin,xmax,ymin,ymax))
+window(rst) <- NULL
+window(rst) = bb
+print(rst)
+```
+
+We can now get summary statistics from the area with the `summary()` function.
+
+
+```{r}
+
+summary(rst)
+
+```
+
+And plot the area with an appropriate value range
+```{r}
+
+plot(rst,range=c(650,3500))
+
+```
